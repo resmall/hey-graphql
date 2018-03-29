@@ -8,13 +8,23 @@ var schema = buildSchema(`
 	  id: ID
 	  code: String
 	}
+	
 	type Query {
-	  order: Order
+	  getOrder(id: Int!): Order
 	}
 `);
 
 
-var root = { order: () => {return {'id': 123, 'code': 'ASADD'}}};
+var root = { 
+	getOrder: ({id}) => {
+		let arr = [{'id': 123, 'code': 'ASADD'}, {'id': 321, 'code': 'D#D4'}];
+		for (let i = 0; i <= arr.length; i++) {
+			if (arr[i].id == id) {
+				return arr[i];
+			}
+		}
+	}
+};
 
 var app = express();
 app.use('/graphql', graphqlHTTP({
